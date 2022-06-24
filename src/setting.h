@@ -6,9 +6,9 @@ static const char ntpServerName[] = "ntp.aliyun.com";
 const int timeZone = 8;
 
 const char* mqttServer = "iot.ranye-iot.net";
-const char* mqttUserName = "hai1040_3";
+const char* mqttUserName = "hai1040_6";
 const char* mqttPassWord = "245006";
-const char* mqttClientId = "hai1040_3_id";
+const char* mqttClientId = "hai1040_6_id";
 
 const int subQos = 1;
 const bool cleanSession = false;

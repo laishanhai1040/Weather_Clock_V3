@@ -97,21 +97,25 @@ void loop() {
     tft.drawRect(0,120,320,50,TFT_BLACK);
     tft.setTextColor(TFT_YELLOW,TFT_BLACK);
     tft.drawString(receiveMessage1, 0,120,4);
-    MESSChangeFlage == false;
+    MESSChangeFlage = false;
   }
 
   if (PMSChangeFlage) {
     PrintPMS();
     PMSChangeFlage = false;
   }
-  mqttClient.loop();
 }
 
 
 void PrintPMS() {
+  tft.drawRect(190,160,130,80,TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.drawString("PM2.5: ", 190,160,4);
   tft.drawNumber(receivePM25, 280,160,4);
+  tft.drawString("TEMP: ", 190,190,4);
+  tft.drawNumber(receiveTEMP, 280,190,4);
+  tft.drawString("HUMI: ", 190,220,4);
+  tft.drawNumber(receiveHUMI, 280,220,4);
 }
 
 void ntpInit() {
@@ -244,7 +248,7 @@ void receiveCallback(char* topic, byte* payload, unsigned int length) {
   Serial.print("]: ");
   for (u_int i=0; i<length; i++) {
     Serial.print((char)payload[i]);
-    receiveVar = receiveVar + (char)payload[i];
+    //receiveVar = receiveVar + (char)payload[i];
   }
   Serial.println("");
   Serial.print("Message Length(Bytes) ");
@@ -271,11 +275,11 @@ void receiveCallback(char* topic, byte* payload, unsigned int length) {
   }
   else if (topic2 == TEMPTopic) {
     receiveTEMP = ii;
-
+    PMSChangeFlage = true;
   }
   else if (topic2 == HUMITopic) {
     receiveHUMI = ii;
-
+    PMSChangeFlage = true;
   }
   else if (topic2 == BACKLIGHT) {
     receiveBackLight = ii;
@@ -285,6 +289,7 @@ void receiveCallback(char* topic, byte* payload, unsigned int length) {
     receiveMessage1 = s;
     MESSChangeFlage = true;
   }
+  
 }
 
 void connectMQTTserver() {
