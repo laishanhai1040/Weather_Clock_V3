@@ -52,7 +52,7 @@ void setup() {
   //tft.drawString("WiFi Connected!", 0,30,4);
   tft.setTextColor(TFT_BLUE);
   //tft.drawString("WiFi SSID:", 0,160,4);
-  tft.drawString(WiFi.SSID(),0,190,4);
+  tft.drawString(WiFi.SSID(),0,230,1);
 
   Serial.println('\n');
   Serial.print("Connected to ");
@@ -61,7 +61,7 @@ void setup() {
   tft.setTextColor(TFT_YELLOW);
   Serial.println(WiFi.localIP());
   String ip01 = WiFi.localIP().toString();
-  tft.drawString(ip01,0,220,4);
+  tft.drawString(ip01,100,230,1);
 
   ntpInit();
 
@@ -108,14 +108,14 @@ void loop() {
 
 
 void PrintPMS() {
-  tft.drawRect(190,160,130,80,TFT_BLACK);
+  tft.drawRect(190,180,130,60,TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.drawString("PM2.5: ", 190,160,4);
-  tft.drawNumber(receivePM25, 280,160,4);
-  tft.drawString("TEMP: ", 190,190,4);
-  tft.drawNumber(receiveTEMP, 280,190,4);
-  tft.drawString("HUMI: ", 190,220,4);
-  tft.drawNumber(receiveHUMI, 280,220,4);
+  tft.drawString("PM2.5: ", 250,192,2);
+  tft.drawNumber(receivePM25, 300,192,2);
+  tft.drawString("TEMP : ", 250,208,2);
+  tft.drawNumber(receiveTEMP, 300,208,2);
+  tft.drawString("HUMI : ", 250,224,2);
+  tft.drawNumber(receiveHUMI, 300,224,2);
 }
 
 void ntpInit() {
@@ -192,33 +192,33 @@ void displayTime() {
   tft.setTextDatum(TL_DATUM);
   tft.setTextColor(BANNER_FG, BANNER_BG);
   tft.setTextPadding(10);
-  tft.drawString(dateTimeString, 0, 0, 6);
-  tft.drawString(timeString, 0, 50, 6);
+  tft.drawString(dateTimeString, 0, 0, 4);
+  tft.drawString(timeString, 212, 0, 4);
 
   String week1 = "";
   String week2 = " ";
   switch (weekday())
   {
   case 1:
-      week2 = "Sunday";
+      week2 = "Sun.";
     break;
   case 2:
-      week2 = "Monday";
+      week2 = "Mon.";
     break;
   case 3:
-      week2 = "Tuesday";
+      week2 = "Tue.";
     break;
   case 4:
-      week2 = "Wednesday";
+      week2 = "Wed.";
     break;
   case 5:
-      week2 = "Thursday";
+      week2 = "Thu.";
     break;
   case 6:
-      week2 = "Friday";
+      week2 = "Fri.";
     break;
   case 7:
-      week2 = "Saturday";
+      week2 = "Sat.";
     break;
   default:
     week2 = "Wrong";
@@ -226,7 +226,7 @@ void displayTime() {
   }
   if (week2 != week1) {
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
-    tft.drawString(week2, 200, 50,4);
+    tft.drawString(week2, 148, 0, 4);
     week1 = week2;
   }
 
