@@ -15,6 +15,7 @@ TFT_eSPI tft = TFT_eSPI();
 bool BLChangeFlage = false;
 bool PMSChangeFlage = false;
 bool MESSChangeFlage = false;
+bool BGChange = false;
 int BackLightValue = 128;
 
 WiFiUDP Udp;
@@ -33,7 +34,7 @@ byte receiveVar;
 byte printVar;
 
 int receivePM10, receivePM25, receivePM100;
-int receiveTEMP, receiveHUMI, receiveBackLight;
+int receiveTEMP, receiveHUMI, receiveBackLight, receiveBG;
 
 String receiveMessage1;
 
@@ -81,7 +82,7 @@ void setup() {
   connectMQTTserver();
 
   tft.setSwapBytes(true);
-  tft.pushImage(0, 26, 320, 204, riven);
+  tft.pushImage(0, 26, 320, 204, pic2);
 
   seniverseDO();
   ticker.attach(3600,seniverseDO);
@@ -121,12 +122,17 @@ void loop() {
     PMSChangeFlage = false;
   }
   //seniverseDO();
+
+  if (BGChange == true) {
+    //tft.pushImage(0, 26, 320, 204, pic2);
+    BGChange = false;
+  }
 }
 
 
 void PrintPMS() {
-  tft.fillRect(0,230,320,10,TFT_BLACK);
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.fillRect(0,230,320,10,TFT_WHITE);
+  tft.setTextColor(TFT_BLACK, TFT_WHITE);
   tft.drawString("PM1.0:", 0,232,1);
   tft.drawNumber(receivePM10, 38,232,1);
   tft.drawString("PM2.5:", 60,232,1);
@@ -247,7 +253,7 @@ void displayTime() {
   }
   if (week2 != week1) {
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
-    tft.drawString(week2, 148, 0, 4);
+    tft.drawString(week2, 142, 0, 4);
     week1 = week2;
   }
 
@@ -309,6 +315,10 @@ void receiveCallback(char* topic, byte* payload, unsigned int length) {
     receiveMessage1 = s;
     MESSChangeFlage = true;
   }
+  else if (topic2 == BACKGROUND) {
+    receiveBG = ii;
+    BGChange = true;
+  }
 }
 
 void connectMQTTserver() {
@@ -330,7 +340,7 @@ void connectMQTTserver() {
 }
 
 void subscribeTopic() {
-  for(u_int i=0; i<7; i++) {
+  for(u_int i=0; i<8; i++) {
     switch (i) {
       case 0:
         topicString = PM10;
@@ -352,6 +362,9 @@ void subscribeTopic() {
         break;
       case 6:
         topicString = MESS1;
+        break;
+      case 7:
+        topicString = BACKGROUND;
         break;
       default:
         topicString = PM10;
@@ -443,9 +456,9 @@ void seniverseDO() {
   uint16_t TFT_1Grey = tft.color565(200,200,200);
 
   tft.setTextColor(TFT_BLACK, TFT_1Grey);
-  tft.drawString(now_address,0,26,2);
+  tft.drawString(now_address,4,30,2);
   tft.setTextColor(TFT_BLACK, TFT_1Grey);
-  tft.drawString(now_weather,0,46,2);
+  tft.drawString(now_weather,4,50,2);
   tft.setTextColor(TFT_BLACK, TFT_1Grey);
-  tft.drawString(now_temperature,0,66,2);
+  tft.drawString(now_temperature,4,70,2);
 }

@@ -24,6 +24,7 @@ const char* PM100 = "hai1040/PMS5003T/pmat100";
 const char* TEMPTopic = "hai1040/PMS5003T/temp";
 const char* HUMITopic = "hai1040/PMS5003T/humi";
 const char* BACKLIGHT = "hai1040/ILI9341/backlight";
+const char* BACKGROUND = "hai1040/ILI9341/background";
 const char* MESS1 = "hai1040/ILI9341/message1";
 
 int timeCheckInterval = 300;
